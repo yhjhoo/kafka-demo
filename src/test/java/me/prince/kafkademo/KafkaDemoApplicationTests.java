@@ -45,11 +45,11 @@ class KafkaDemoApplicationTests {
 
     @Test
     void writeSample() throws InterruptedException {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             Thread.sleep(3000);
             String data = "hello_" + i + "_" + LocalDateTime.now();
             System.out.println("data: " + data);
-            kafkaTemplate.send("quickstart-events1", data);
+            kafkaTemplate.send("quickstart-events1", "m_" + i, data);
         }
     }
 

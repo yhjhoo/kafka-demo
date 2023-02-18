@@ -1,12 +1,9 @@
 package me.prince.kafkademo;
 
-import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -23,15 +20,45 @@ public class KafkaDemoApplication {
         SpringApplication.run(KafkaDemoApplication.class, args);
     }
 
-    @Bean
+   /* @Bean
     public NewTopic topic() {
-        return TopicBuilder.name("quickstart-events1")
-                .partitions(2)
-                .replicas(3)
+        return TopicBuilder.name("quickstart-events3")
+                .partitions(20)
+                .replicas(5)
                 .compact()
                 .build();
-    }
+    }*/
+
+    /*@Bean
+    CommandLineRunner commandLineRunner(KafkaAdmin kafkaAdmin) {
+        return args -> {
+            System.out.println("111");
+            AdminClient adminClient = AdminClient.create(kafkaAdmin.getConfigurationProperties());
+            DeleteTopicsResult result = adminClient.deleteTopics(Arrays.asList("quickstart-events6"));
+            System.out.println(result);
+            adminClient.close();
+        };
+    }*/
 }
+
+/*@Configuration
+class KafkaTopicConfig {
+
+    @Value(value = "${spring.kafka.bootstrap-servers}")
+    private String bootstrapAddress;
+
+    @Bean
+    public KafkaAdmin kafkaAdmin() {
+        Map<String, Object> configs = new HashMap<>();
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        return new KafkaAdmin(configs);
+    }
+
+    @Bean
+    public NewTopic topic1() {
+        return new NewTopic("quickstart-events6", 1, (short) 1);
+    }
+}*/
 
 @Service
 class Listener {
@@ -42,7 +69,6 @@ class Listener {
             @Header(KafkaHeaders.RECEIVED_TOPIC) List<String> topics,
             @Header(KafkaHeaders.OFFSET) List<Long> offsets
     ) {
-        System.out.println("");
         System.out.println("=================");
 
 
